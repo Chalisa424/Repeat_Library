@@ -15,6 +15,16 @@ app.get('/books',(req, res) => {
    res.json(filteredBooks);
 })
 
+app.get('/books/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const book = books.find((book)=> book.id === id);
+  if(book){
+    res.json(book);
+  }else {
+    res.status(404).json('Book not found' );
+  }
+})
+
 app.listen(port, () =>{
     console.log(`App listening at http://localhost:${port}`);
 })
