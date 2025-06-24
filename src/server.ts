@@ -7,7 +7,12 @@ app.get('/',(req: Request, res: Response) => {
 })
 
 app.get('/books',(req, res) => {
-    res.json(books)
+   const title = req.query.title as string | undefined;
+   let filteredBooks = books;
+   if (title && (typeof title === 'string')) {
+     filteredBooks = books.filter((book) => book.title.toLowerCase().startsWith(title.toLowerCase()));
+   }
+   res.json(filteredBooks);
 })
 
 app.listen(port, () =>{
@@ -106,7 +111,7 @@ const books: Book[] = [
   },
   {
     id: 8,
-    title: 'The Hobbit',
+    title: 'The Hobbit 4 ',
     author_name: 'J.R.R. Tolkien',
     description: 'A fantasy adventure preceding The Lord of the Rings.',
     groups: 'Fiction, Fantasy',
