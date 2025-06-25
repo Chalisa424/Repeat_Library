@@ -233,23 +233,23 @@ const books: Book[] = [
   }
 ];
 
-export function getBooksBytitle(title: string | undefined ): Book[] {
-  if(!title) return books;
+export function getBooksBytitle(title: string | undefined ): Promise<Book[]> {
+  if(!title) return Promise.resolve(books);
   const LowerTitle = title.toLowerCase()
-  return books.filter((book)=> book.title.toLowerCase().includes(LowerTitle))
+  return Promise.resolve(books.filter((book)=> book.title.toLowerCase().includes(LowerTitle))) 
 }
 
-export function getAllBooks() {
-  return books
+export function getAllBooks():Promise<Book[]>{
+  return Promise.resolve(books);
 }
 
-export function getBookById(id : number): Book | undefined {
+export function getBookById(id : number): Promise<Book | undefined> {
   const book = books.find((book)=> book.id === id);
-  return book;
+  return Promise.resolve(book);
 }
 
-export function addBook(newBook : Book ): Book {
+export function addBook(newBook : Book ): Promise<Book[]> {
   newBook.id = books.length + 1;
   books.push(newBook)
-  return newBook
+  return Promise.resolve(books)
 }

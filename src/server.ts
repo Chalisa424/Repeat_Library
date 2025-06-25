@@ -11,15 +11,15 @@ app.get('/',(req: Request, res: Response) => {
   res.send('Hello World!');
 })
 
-app.get('/books',(req, res) => {
+app.get('/books',async (req, res) => {
    const title = req.query.title as string | undefined;
-   let filteredBooks = getBooksBytitle(title);
+   let filteredBooks = await getBooksBytitle(title);
    res.json(filteredBooks);
 })
 
-app.get('/books/:id', (req, res) => {
+app.get('/books/:id', async (req, res) => {
   const id = parseInt(req.params.id);
-  const book = getBookById(id)
+  const book = await getBookById(id)
   if(book){
     res.json(book);
   }else {
@@ -27,9 +27,9 @@ app.get('/books/:id', (req, res) => {
   }
 })
 
-app.post('/books',(req, res)=>{
+app.post('/books',async (req, res)=>{
   const newBook : Book = req.body;
-  addBook(newBook)
+  await addBook(newBook)
   res.json(newBook); 
 })
 
