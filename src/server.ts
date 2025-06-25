@@ -10,16 +10,13 @@ app.get('/',(req: Request, res: Response) => {
 
 app.get('/books',(req, res) => {
    const title = req.query.title as string | undefined;
-   let filteredBooks = books;
-   if (title && (typeof title === 'string')) {
-     filteredBooks = books.filter((book) => book.title.toLowerCase().startsWith(title.toLowerCase()));
-   }
+   let filteredBooks = getBooksBytitle(title);
    res.json(filteredBooks);
 })
 
 app.get('/books/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  const book = books.find((book)=> book.id === id);
+  const book = getBookById(id)
   if(book){
     res.json(book);
   }else {
@@ -29,14 +26,34 @@ app.get('/books/:id', (req, res) => {
 
 app.post('/books',(req, res)=>{
   const newBook : Book = req.body;
-  newBook.id = books.length + 1;
-  books.push(newBook);
+  addBook(newBook)
   res.json(newBook); 
 })
 
 app.listen(port, () =>{
     console.log(`App listening at http://localhost:${port}`);
 })
+
+function getBooksBytitle(title: string | undefined ): Book[] {
+  if(!title) return books;
+  const LowerTitle = title.toLowerCase()
+  return books.filter((book)=> book.title.toLowerCase().includes(LowerTitle))
+}
+
+function getAllBooks() {
+  return books
+}
+
+function getBookById(id : number): Book | undefined {
+  const book = books.find((book)=> book.id === id);
+  return book;
+}
+
+function addBook(newBook : Book ): Book {
+  newBook.id = books.length + 1;
+  books.push(newBook)
+  return newBook
+}
 
 interface Book {
   id: number;                 
