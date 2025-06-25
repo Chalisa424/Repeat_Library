@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+
 app.get('/',(req: Request, res: Response) => {
   res.send('Hello World!');
 })
@@ -23,6 +25,13 @@ app.get('/books/:id', (req, res) => {
   }else {
     res.status(404).json('Book not found' );
   }
+})
+
+app.post('/books',(req, res)=>{
+  const newBook : Book = req.body;
+  newBook.id = books.length + 1;
+  books.push(newBook);
+  res.json(newBook); 
 })
 
 app.listen(port, () =>{
